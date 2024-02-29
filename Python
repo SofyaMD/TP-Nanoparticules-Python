@@ -1,0 +1,104 @@
+Script qui a permis de trouver la bonne courbe a soustraire.
+
+import csv
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+
+def remplacer_virgule_par_point(chaine):
+    return chaine.replace(',', '.')
+
+# Charger les données à partir du fichier CSV
+with open('/Users/oxanadonnat/Desktop/b12CourbeIn.CSV', 'r') as fichier_csv:
+    lecteur_csv = csv.reader(fichier_csv, delimiter=',')
+    en_tete=next(lecteur_csv,None)
+    # Ignorer l'en-tête s'il y en a un
+    en_tete = next(lecteur_csv, None)
+    # Extraire les données dans deux listes
+    longueurs_donde = []
+    absorbance = []
+    for ligne in lecteur_csv:
+        longueurs_donde.append(float(ligne[0]))  # Utilisation de la fonction ici
+        absorbance.append(float(ligne[1]))      # Utilisation de la fonction ici
+
+# Convertir les listes en tableaux NumPy pour une manipulation plus aisée
+longueurs_donde = np.array(longueurs_donde)
+absorbance = np.array(absorbance)
+# Tracer la courbe
+plt.plot(longueurs_donde, absorbance, linestyle='-')
+
+# Ajouter des titres et des étiquettes d'axe
+plt.title("Spectre d'absorption")
+plt.xlabel("Longueur d'onde (nm)")
+plt.ylabel("Absorbance")
+
+# Afficher la grille
+plt.grid(True)
+
+# Création d'un tableau de valeurs de x de 200 à 900 avec un pas de 1
+x = np.linspace(200, 900, 701)  # 701 points pour couvrir la plage de 200 à 900 inclusivement
+# Calcul des valeurs correspondantes de 1/x^4
+y = ((0.29/(x)**4)*1000000000000)/68
+
+# Tracer la courbe
+plt.plot(x, y, label='1/x^4')
+
+
+# Afficher la grille
+plt.grid(True)
+
+# Afficher le graphique
+plt.show()
+
+Scripte qui a permit de visualiser la courbe corrigée 
+
+import csv
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+
+def remplacer_virgule_par_point(chaine):
+    return chaine.replace(',', '.')
+
+# Charger les données à partir du fichier CSV
+with open('/Users/oxanadonnat/Desktop/B12CourbeIn.CSV', 'r') as fichier_csv:
+    lecteur_csv = csv.reader(fichier_csv, delimiter=',')
+    en_tete=next(lecteur_csv,None)
+    # Ignorer l'en-tête s'il y en a un
+    en_tete = next(lecteur_csv, None)
+    # Extraire les données dans deux listes
+    longueurs_donde = []
+    absorbance = []
+    for ligne in lecteur_csv:
+        longueurs_donde.append(float(ligne[0]))  # Utilisation de la fonction ici
+        absorbance.append(float(ligne[1]))    
+        
+# Convertir les listes en tableaux NumPy pour une manipulation plus aisée
+longueurs_donde = np.array(longueurs_donde)
+absorbance = np.array(absorbance)
+
+# Création d'un tableau de valeurs de x correspondant aux longueurs d'onde
+x = longueurs_donde
+
+# Calcul des valeurs correspondantes de 1/x^4
+y1= ((0.29 /(x)**4)*1000000000000)/68
+
+# Soustraction de la courbe de l'absorbance de la courbe de 1/x^4
+difference = absorbance - y1
+
+# Tracer la courbe de la différence
+plt.plot(longueurs_donde, difference, label='Absorbance')
+
+# Ajouter des titres, des étiquettes d'axe et une légende
+plt.title("courbe d'absorption")
+plt.xlabel("Longueur d'onde (nm)")
+plt.ylabel("Absorbance")
+plt.legend()
+
+# Afficher la grille
+plt.grid(True)
+
+# Afficher le graphique
+plt.show()
